@@ -1,4 +1,6 @@
 import mongoose from "mongoose"
+import bcrypt from 'bcrypt'
+import jwt from "jsonwebtoken"
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -44,5 +46,4 @@ const userSchema = new mongoose.Schema({
         ref : "Review"
     }]
 },{timestamps:true})
-
 export const User = mongoose.model('User', userSchema)
