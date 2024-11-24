@@ -118,4 +118,4 @@ async function deleteOrder(orderId) {
     await Order.findByIdAndDelete(order._id);
 }
 
-export {createOrder, placeOrder, confirmedOrder, shipedOrder, deleteOrder, deliveredOrder, cancelOrder}
+export {createOrder, placeOrder, confirmedOrder, shipedOrder, deleteOrder, deliveredOrder, cancelOrder, findOrderById, userOrderHistory, getAllOrder}
