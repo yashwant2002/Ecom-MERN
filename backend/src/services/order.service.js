@@ -97,7 +97,7 @@ async function findOrderById(orderId) {
 async function userOrderHistory(userId) {
   try {
     const orders = await Order.find({ user: userId, orderStatus: "PLACED" })
-      .populate({ path: "orderItems", populate: { path: "product" } })
+      .populate({ path: "orderItems", populate: { path: "product" } })  
       .lean();
 
     return orders;
