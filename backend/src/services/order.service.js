@@ -1,5 +1,5 @@
-import cartService, { findUserCart } from "./cart.service.js";
-import Address from "../models/address.model.js";
+import { findUserCart } from "./cart.service.js";
+import {Address} from "../models/address.model.js";
 import { Order } from "../models/order.model.js";
 
 async function createOrder(user, shipAddress) {

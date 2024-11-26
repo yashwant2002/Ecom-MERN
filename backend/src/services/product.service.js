@@ -75,7 +75,7 @@ async function findProductById(id) {
   return product;
 }
 
-async function getAllProducts(reqQuery) {
+async function getAllProduct(reqQuery) {
   let {
     category,
     color,
@@ -163,7 +163,7 @@ export {
   createProduct,
   deleteProduct,
   updateProduct,
-  getAllProducts,
+  getAllProduct,
   findProductById,
   createMultipleProduct,
 };

@@ -1,17 +1,17 @@
 import { authenticate } from "../middleware/authenticate.js";
 import {
-  createMultipleProduct,
-  createProduct,
-  deleteProduct,
-  updateProduct,
+  createMultipleProducts,
+  createdProduct,
+  deletedProduct,
+  updatedProduct,
 } from "../controllers/product.controller.js";
 import { Router } from "express";
 
 const router = Router();
 
-router.post("/", authenticate, createProduct);
-router.post("/create", authenticate, createMultipleProduct);
-router.delete("/:id", authenticate, deleteProduct);
-router.put("/:id", authenticate, updateProduct);
+router.post("/", authenticate, createdProduct);
+router.post("/create", authenticate, createMultipleProducts);
+router.delete("/:id", authenticate, deletedProduct);
+router.put("/:id", authenticate, updatedProduct);
 
 export default router;

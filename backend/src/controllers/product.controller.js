@@ -4,73 +4,73 @@ import {
   deleteProduct,
   updateProduct,
   findProductById,
-  getAllProducts,
+  getAllProduct,
 } from "../services/product.service.js";
 
-const createProduct = async (req, res) => {
+const createdProduct = async (req, res) => {
   try {
     const product = await createProduct(req.body);
-    return res.status(201).send(product);
+    return res.status(201).send(product); 
   } catch (error) {
-    return res.status(500).send({ error: error.message });
+    return res.status(500).send({ error: error.message }); 
   }
 };
 
-const deleteProduct = async (req, res) => {
+const deletedProduct = async (req, res) => {
   const productId = req.params.id;
   try {
     const product = await deleteProduct(productId);
-    return res.status(201).send(product);
+    return res.status(200).send(product); 
   } catch (error) {
-    return res.status(500).send({ error: error.message });
+    return res.status(500).send({ error: error.message }); 
   }
 };
 
-const updateProduct = async (req, res) => {
+const updatedProduct = async (req, res) => {
   const productId = req.params.id;
   try {
     const product = await updateProduct(req.body);
-    return res.status(201).send(product);
+    return res.status(200).send(product); 
   } catch (error) {
-    return res.status(500).send({ error: error.message });
+    return res.status(500).send({ error: error.message }); 
   }
 };
 
-const findProductById = async (req, res) => {
+const findProductByIds = async (req, res) => {
   const productId = req.params.id;
   try {
     const product = await findProductById(productId);
-    return res.status(201).send(product);
+    return res.status(200).send(product); 
   } catch (error) {
-    return res.status(500).send({ error: error.message });
+    return res.status(500).send({ error: error.message }); 
   }
 };
 
 const getAllProducts = async (req, res) => {
-  const productId = req.params.id;
   try {
-    const product = await getAllProducts(req.query);
-    return res.status(201).send(product);
+    const product = await getAllProduct(req.query);
+    return res.status(200).send(product); 
   } catch (error) {
-    return res.status(500).send({ error: error.message });
+    return res.status(500).send({ error: error.message }); 
   }
 };
 
-const createMultipleProduct = async (req, res) => {
-  const productId = req.params.id;
+const createMultipleProducts = async (req, res) => {
   try {
     const product = await createMultipleProduct(req.body);
-    return res.status(201).send({ message: "Product created Successfully" });
+    return res
+      .status(201)
+      .send({ message: "Product created Successfully", product }); 
   } catch (error) {
-    return res.status(500).send({ error: error.message });
+    return res.status(500).send({ error: error.message }); 
   }
 };
 
 export {
-  createMultipleProduct,
+  createMultipleProducts,
   getAllProducts,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-  findProductById,
+  createdProduct,
+  updatedProduct,
+  deletedProduct,
+  findProductByIds,
 };
