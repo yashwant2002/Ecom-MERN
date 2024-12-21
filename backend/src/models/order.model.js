@@ -1,74 +1,43 @@
 import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema({
-    user : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "User",
-        required : true
+const orderSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-
-    orderItem : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "OrderItem",
-        required : true
+    orderItems: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "OrderItem",
+        required: true,
+      },
+    ],
+    totalPrice: {
+      type: Number,
+      required: true,
     },
-
-    orderDate : {
-        type : Date,
-        default : Date.now()
+    totalDiscountedPrice: {
+      type: Number,
+      required: true,
     },
-
-    deliveryDate : {
-        type : Date,
-        required : true
+    discount: {
+      type: Number,
+      required: true,
     },
-
-    shippingAddress : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Address",
-        required : true
+    totalItem: {
+      type: Number,
+      required: true, // Make sure it's required
     },
-
-    paymentDetails : {
-        paymentMethod : {
-            type : String,
-        },
-        paymentId : {
-            type : String,
-        },
-        paymentStatus : {
-            type : String,
-        },
-        transactionId : {
-            type : String,
-        },
+    shipAddress: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Address", // Ensure this references the correct Address model
+      required: true, // Make sure it's required
     },
+  },
+  { timestamps: true }
+);
 
-    totalPrice : {
-        type : Number,
-        required : true
-    },
 
-    totalDiscountedPrice : {
-        type : Number,
-        required : true
-    },
-
-    discount : {
-        type : Number,
-        required : true
-    },
-
-    totalItems : {
-        type : Number,
-        required : true
-    },
-
-    orderStatus : {
-        type : String,
-        required : true,
-        default : "PENDING"
-    },
-},{timestamps: true});
-
-export const Order = mongoose.model('Order', orderSchema)
+export const Order = mongoose.model("Order", orderSchema);

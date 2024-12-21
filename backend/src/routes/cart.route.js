@@ -5,6 +5,6 @@ import { Router } from "express"
 const router = Router();
 
 router.get("/", authenticate, findUserCarts)
-router.get("/add", authenticate, addItemtoCart)
+router.put("/add", authenticate, addItemtoCart)
 
 export default router;

@@ -4,7 +4,7 @@ import { Router } from "express"
 
 const router = Router();
 
-router.get("/", getAllProducts);
-router.get("/:id/:id", authenticate, findProductByIds);
+router.get("/", authenticate, getAllProducts);
+router.get("/id/:id", authenticate, findProductByIds);
 
 export default router

@@ -79,12 +79,12 @@ async function getAllProduct(reqQuery) {
   let {
     category,
     color,
-    size,
+    sizes,
     minPrice,
     maxPrice,
     minDiscount,
-    sort,
-    stock,
+    sort, 
+    stock, 
     pageNumber,
     pagesize,
   } = reqQuery;
@@ -92,6 +92,8 @@ async function getAllProduct(reqQuery) {
   pagesize = pagesize || 10;
 
   let query = Product.find().populate("category");
+
+  // Filter by Category
   if (category) {
     const existCategory = await Category.findOne({ name: category });
     if (existCategory) {
@@ -101,61 +103,61 @@ async function getAllProduct(reqQuery) {
     }
   }
 
+  // Filter by Color
   if (color) {
     const colorSet = new Set(
       color.split(",").map((color) => color.trim().toLowerCase())
     );
-
     const colorRegex =
       colorSet.size > 0 ? new RegExp([...colorSet].join("|"), "i") : null;
-
     query = query.where("color").regex(colorRegex);
   }
 
+  // Filter by Sizes
   if (sizes) {
     const sizeSet = new Set(sizes);
-    query.query.where("sizes.name").in([...sizeSet]);
+    query = query.where("sizes.name").in([...sizeSet]);
   }
 
+  // Filter by Price Range
   if (minPrice && maxPrice) {
-    query = (await query.where("discountedPrice").gte(minPrice)).filter(
-      maxPrice
-    );
+    query = query.where("discountedPrice").gte(minPrice).lte(maxPrice);
   }
 
+  // Filter by Minimum Discount
   if (minDiscount) {
-    query = (await query.where("discountPresent")).gt(minDiscount);
+    query = query.where("discountedPresent").gt(minDiscount);
   }
 
+  // Filter by Stock Availability
   if (stock) {
-    if (stock == "in_stock") {
+    if (stock === "in_stock") {
       query = query.where("quantity").gt(0);
-    } else if (stock == "out_of_stock") {
-      query = (await query.where("quantity")).length(1);
+    } else if (stock === "out_of_stock") {
+      query = query.where("quantity").lte(0);
     }
   }
 
+  // Sorting
   if (sort) {
-    const sortDirection = sort === "price_higth" ? -1 : 1;
+    const sortDirection = sort === "price_hight" ? -1 : 1;
     query = query.sort({ discountedPrice: sortDirection });
   }
 
+  // Pagination
   const totalProducts = await Product.countDocuments(query);
-
   const skip = (pageNumber - 1) * pagesize;
-
   query = query.skip(skip).limit(pagesize);
 
   const products = await query.exec();
-
   const totalPages = Math.ceil(totalProducts / pagesize);
 
   return { content: products, currentPage: pageNumber, totalPages };
 }
 
 async function createMultipleProduct(product) {
-  for (let product of products) {
-    await createProduct(product);
+  for (let prod of product) {
+    await createProduct(prod);
   }
 }
 

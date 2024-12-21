@@ -1,72 +1,105 @@
 import { Cart } from "../models/cart.model.js";
 import { CartItem } from "../models/cartItem.model.js";
+import { Product } from "../models/product.model.js";
 
+// Create Cart for a User
 async function createCart(user) {
   try {
     const cart = new Cart({ user });
-    const createCart = await cart.save();
-
-    return createCart;
+    const createdCart = await cart.save();
+    console.log("New cart created:", createdCart);
+    return createdCart;
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
+// Find User's Cart and Calculate Total Prices
 async function findUserCart(userId) {
   try {
-    let cart = await Cart.findOne({ user: userId });
+    let cart = await Cart.findOne({ user: userId }).populate({
+      path: "cartItems",
+      populate: {
+        path: "product",
+        model: "Product",
+      },
+    });
 
-    let cartItems = await CartItem.find({ cart: cart._id }.populate("product"));
-
-    cart.cartItems = cartItems;
+    if (!cart) {
+      // If cart doesn't exist, create a new one
+      console.log("Cart not found, creating a new cart for user:", userId);
+      cart = await createCart(userId);
+    }
 
     let totalPrice = 0;
     let totalDiscountPrice = 0;
     let totalItem = 0;
 
     for (let cartItem of cart.cartItems) {
-      totalPrice += cartItem.price;
-      totalDiscountPrice += cartItem.discountPrice;
+      totalPrice += cartItem.price * cartItem.quantity;
+      totalDiscountPrice += cartItem.discountPrice * cartItem.quantity;
       totalItem += cartItem.quantity;
     }
 
     cart.totalPrice = totalPrice;
     cart.totalDiscountPrice = totalPrice - totalDiscountPrice;
     cart.totalItem = totalItem;
+
+    await cart.save();
+    return cart;
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
+// Add Item to User's Cart
 async function addCartItem(userId, req) {
   try {
-    const cart = await Cart.findOne({ user: userId });
-    const product = await Product.findById(req.productId);
+    let cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      console.log("Cart not found for user:", userId);
+      cart = await createCart(userId);
+    }
 
-    const IsPresent = await CartItem.findOne({
+    const product = await Product.findById(req.productId);
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    console.log("Product found:", product);
+
+    // Check if the item is already in the cart
+    const isPresent = await CartItem.findOne({
       cart: cart._id,
       product: product._id,
-      userId,
     });
-    if (!IsPresent) {
+
+    if (!isPresent) {
       const cartItem = new CartItem({
         product: product._id,
         cart: cart._id,
-        quantity: 1,
+        quantity: req.quantity || 1,
         userId,
         price: product.price,
         size: req.size,
-        discountPrice: product.discountPrice,
+        discountPrice: product.discountedPrice || product.price,
       });
 
-      const createCartItem = await cartItem.save();
-      cart.cartItem.push(createCartItem);
+      const createdCartItem = await cartItem.save();
+
+      // Add the new cart item to the cart
+      cart.cartItems.push(createdCartItem);
       await cart.save();
 
-      return "Item added to Cart";
+      console.log("Item added to the cart:", createdCartItem);
+      return cart; // Return the updated cart object
+    } else {
+      console.log("Item already in the cart");
+      return cart; // Return the cart object if item is already in the cart
     }
   } catch (error) {
     throw new Error(error.message);
   }
 }
+
 export { createCart, addCartItem, findUserCart };

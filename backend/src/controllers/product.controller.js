@@ -29,7 +29,7 @@ const deletedProduct = async (req, res) => {
 const updatedProduct = async (req, res) => {
   const productId = req.params.id;
   try {
-    const product = await updateProduct(req.body);
+    const product = await updateProduct(productId, req.body); // Pass productId for the update
     return res.status(200).send(product); 
   } catch (error) {
     return res.status(500).send({ error: error.message }); 
@@ -48,8 +48,8 @@ const findProductByIds = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
-    const product = await getAllProduct(req.query);
-    return res.status(200).send(product); 
+    const products = await getAllProduct(req.query);
+    return res.status(200).send(products); 
   } catch (error) {
     return res.status(500).send({ error: error.message }); 
   }
@@ -57,10 +57,10 @@ const getAllProducts = async (req, res) => {
 
 const createMultipleProducts = async (req, res) => {
   try {
-    const product = await createMultipleProduct(req.body);
+    const products = await createMultipleProduct(req.body);
     return res
       .status(201)
-      .send({ message: "Product created Successfully", product }); 
+      .send({ message: "Products created Successfully", products }); 
   } catch (error) {
     return res.status(500).send({ error: error.message }); 
   }

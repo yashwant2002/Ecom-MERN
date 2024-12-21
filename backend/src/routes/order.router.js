@@ -9,7 +9,7 @@ import { Router } from "express";
 const router = Router();
 
 router.post("/", authenticate, createdOrder);
-router.get("/user", authenticate, orderHistory);
+router.get("/user", authenticate, orderHistory); 
 router.get("/:id", authenticate, findOrdersById);
 
 export default router;

@@ -9,7 +9,7 @@ import { Router } from "express";
 
 const router = Router();
 
-router.post("/", authenticate, createdProduct);
+router.post("/", authenticate, createdProduct); 
 router.post("/create", authenticate, createMultipleProducts);
 router.delete("/:id", authenticate, deletedProduct);
 router.put("/:id", authenticate, updatedProduct);
