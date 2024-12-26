@@ -83,8 +83,8 @@ async function getAllProduct(reqQuery) {
     minPrice,
     maxPrice,
     minDiscount,
-    sort, 
-    stock, 
+    sort,
+    stock,
     pageNumber,
     pagesize,
   } = reqQuery;
