@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
+import { navigation } from "./navigation";
 
 const NewNavbar = () => {
   const [dropdown, setDropdown] = useState(null);
@@ -8,50 +9,6 @@ const NewNavbar = () => {
     setDropdown(dropdown === menu ? null : menu);
   };
 
-  const menuData = [
-    {
-      name: "Men Wear",
-      columns: [
-        {
-          title: "Top Wear",
-          items: ["T-Shirt", "Casual Shirts", "Formal Shirts", "Blazers & Coats", "Suits", "Jackets"],
-        },
-        {
-          title: "Western Wear",
-          items: ["Dresses", "Jumpsuits", "Tops, T-Shirts & Shirts", "Shorts & Skirts", "Shrugs", "Blazers"],
-        },
-        {
-          title: "Footwear",
-          items: ["Flats", "Casual Shoes", "Heels", "Boots"],
-        },
-        {
-          title: "Sports & Active Wear",
-          items: ["Clothing", "Footwear", "Sports Accessories"],
-        },
-        {
-          title: "Lingerie & Sleepwear",
-          items: ["Bra", "Briefs", "Sleepwear"],
-        },
-      ],
-    },
-    {
-      name: "Women Wear",
-      columns: [
-        {
-          title: "Ethnic Wear",
-          items: ["Sarees", "Kurtas", "Lehengas", "Ethnic Dresses"],
-        },
-        {
-          title: "Casual Wear",
-          items: ["Tops", "Jeans", "Shorts", "Skirts"],
-        },
-        {
-          title: "Footwear",
-          items: ["Sandals", "Heels", "Flats"],
-        },
-      ],
-    },
-  ];
 
   return (
     <nav className="bg-white shadow">
@@ -61,7 +18,7 @@ const NewNavbar = () => {
 
         {/* Menu Items */}
         <ul className="flex items-center gap-6">
-          {menuData.map((menu, index) => (
+          {navigation.map((menu, index) => (
             <li
               key={index}
               className="relative group"
