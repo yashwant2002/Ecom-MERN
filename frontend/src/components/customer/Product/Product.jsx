@@ -43,37 +43,35 @@ function classNames(...classes) {
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleFilter = (value, sectionId)=>{
-    const searchParams = new URLSearchParams(location.search)
-    let filterValue = searchParams.getAll(sectionId)
-    if(filterValue.length>0 && filterValue[0].split(",").includes(value)){
-      filterValue = filterValue[0].split(",").filter((item)=>item!= value);
-      if(filterValue.length==0){
-        searchParams.delete(sectionId)
-    }
-    }else{
-      filterValue.push(value)
+  const handleFilter = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+    let filterValue = searchParams.getAll(sectionId);
+    if (filterValue.length > 0 && filterValue[0].split(",").includes(value)) {
+      filterValue = filterValue[0].split(",").filter((item) => item != value);
+      if (filterValue.length == 0) {
+        searchParams.delete(sectionId);
+      }
+    } else {
+      filterValue.push(value);
     }
 
-    if(filterValue.length>0){
+    if (filterValue.length > 0) {
       searchParams.set(sectionId, filterValue.join(","));
-      
     }
     const query = searchParams.toString();
-      navigate({search : `?${query}`})
-  }
+    navigate({ search: `?${query}` });
+  };
 
-  const handleRadioFilter = (e, sectionId)=>{
-    const searchParams =new URLSearchParams(location.search)
+  const handleRadioFilter = (e, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
 
-    searchParams.set(sectionId,e.target.value)
+    searchParams.set(sectionId, e.target.value);
 
     const query = searchParams.toString();
-      navigate({search : `?${query}`})
-    
-  }
+    navigate({ search: `?${query}` });
+  };
 
   return (
     <div className="bg-white">
@@ -213,7 +211,8 @@ export default function Product() {
                             name="controlled-radio-buttons-group"
                           >
                             {section.options.map((option, optionIdx) => (
-                              <FormControlLabel key={optionIdx}
+                              <FormControlLabel
+                                key={optionIdx}
                                 value={option.name}
                                 control={<Radio />}
                                 label={option.label}
@@ -328,8 +327,9 @@ export default function Product() {
                             <div className="flex h-5 shrink-0 items-center">
                               <div className="group grid size-4 grid-cols-1">
                                 <input
-                                   onChange={() => handleFilter(option.value, section.id)}
-                                  
+                                  onChange={() =>
+                                    handleFilter(option.value, section.id)
+                                  }
                                   id={`filter-${section.id}-${optionIdx}`}
                                   name={`${section.id}[]`}
                                   type="checkbox"
@@ -405,7 +405,9 @@ export default function Product() {
                           >
                             {section.options.map((option, optionIdx) => (
                               <FormControlLabel
-                                onChange={(e)=>handleRadioFilter(e, section.id)}
+                                onChange={(e) =>
+                                  handleRadioFilter(e, section.id)
+                                }
                                 key={optionIdx}
                                 value={option.value}
                                 control={<Radio />}

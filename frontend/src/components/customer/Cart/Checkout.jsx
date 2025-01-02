@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useLocation } from 'react-router-dom';
 import Address from './Address';
-import Order from './Order';
+import OrderSummary from './OrderSummary';
 
 const steps = ["Login", "Delivery Address", "Order Summary", "Payment"];
 
@@ -59,9 +59,9 @@ export function Checkout() {
               Back
             </Button>
           </Box>
-          <div>
+          <div className='mt-10'>
             {
-                step==2 ? <Address/> : <Order/>
+                step==2 ? <Address/> : <OrderSummary/>
             }
           </div>
         </React.Fragment>
